@@ -39,12 +39,12 @@ public class AppConfig {
 # 스프링 컨테이너 생성
 
 ```java
-  ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+//  ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
 ```
 
 - `ApplicationContext` 를 스프링 컨테이너라 한다.
 - `ApplicationContext` 는 인터페이스이다.
-- 스프링 컨테이너는 XML을 기반으로 만들 수 있고, 애노테이션 기반의 자바 설정 클래스로 만들 수 있다.
+- 스프링 컨테이너는 XML 을 기반으로 만들 수 있고, 애노테이션 기반의 자바 설정 클래스로 만들 수 있다.
 - 직전에 `AppConfig` 를 사용했던 방식이 애노테이션 기반의 자바 설정 클래스로 스프링 컨테이너를 만든것이다.
 - 자바 설정 클래스를 기반으로 스프링 컨테이너( `ApplicationContext` )를 만들어보자.
     - `new AnnotationConfigApplicationContext(AppConfig.class);`
