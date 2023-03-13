@@ -2,7 +2,9 @@ package jp.falsystack.core.discount;
 
 import jp.falsystack.core.member.Grade;
 import jp.falsystack.core.member.Member;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RateDiscountPolicy implements DiscountPolicy{
 
   private final int DISCOUNT_PERCENT = 10;
