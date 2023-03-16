@@ -1,5 +1,6 @@
 package jp.falsystack.core.order;
 
+import jp.falsystack.core.annotation.MainDiscountPolicy;
 import jp.falsystack.core.discount.DiscountPolicy;
 import jp.falsystack.core.member.Member;
 import jp.falsystack.core.member.MemberRepository;
@@ -14,7 +15,7 @@ public class OrderServiceImpl implements OrderService {
   private final DiscountPolicy discountPolicy;
 
   @Autowired
-  public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+  public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
     this.memberRepository = memberRepository;
     this.discountPolicy = discountPolicy;
   }
