@@ -1,6 +1,6 @@
 package jp.falsystack.core.autowired;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Map;
@@ -8,7 +8,6 @@ import jp.falsystack.core.AutoAppConfig;
 import jp.falsystack.core.discount.DiscountPolicy;
 import jp.falsystack.core.member.Grade;
 import jp.falsystack.core.member.Member;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
@@ -19,7 +18,8 @@ public class AllBeanTest {
   @Test
   @DisplayName("")
   void findAllBean() {
-    ApplicationContext ac = new AnnotationConfigApplicationContext(DiscountService.class, AutoAppConfig.class);
+    ApplicationContext ac = new AnnotationConfigApplicationContext(DiscountService.class,
+        AutoAppConfig.class);
 
     DiscountService discountService = ac.getBean(DiscountService.class);
     Member member = new Member(1L, "userA", Grade.VIP);
