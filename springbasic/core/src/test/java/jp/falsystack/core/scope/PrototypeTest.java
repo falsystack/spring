@@ -25,6 +25,10 @@ public class PrototypeTest {
     System.out.println("prototypeBean2 = " + prototypeBean2);
 
     assertThat(prototypeBean1).isNotSameAs(prototypeBean2);
+
+    // PrototypeBean의 경우 생성과 초기화까지만 관리하기 떄문에 PreDestroy가 실행되지 않는다.
+    // destroy를 시키고 싶은 경우 직접 종료메서드를 실행해줘야한다.
+    // prototypeBean1.destroy();
     ac.close();
   }
 
