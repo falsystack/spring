@@ -711,3 +711,79 @@ PrototypeBean HelloBean() {
 ![](imgs/prototype01.png)
 
 ![](imgs/prototype02.png)
+
+**프로토타입 빈의 특징 정리**
+- 스프링 컨테이너에 요청할 때 마다 새로 생성된다.
+- 스프링 컨테이너는 프로토타입 빈의 생성과 의존관계 주입 그리고 초기화까지만 관여한다.
+- 종료 메서드가 호출되지 않는다.
+- 그래서 프로토타입 빈은 프로토타입 빈을 조회한 클라이언트가 관리해야 한다. 종료 메서드에 대한 호출도 클라이언트가 직접 해야한다.
+
+### 프로토타입 스코프 - 싱글톤 빈과 함께 사용시 Provider로 문제 해결
+싱글톤 빈과 프로토타입 빈을 함께 사용할 때, 어떻게 하면 사용할 때 마다 항상 새로운 프로토타입 빈을 생성할 수 있을까?
+
+**스프링 컨테이너에 요청**
+
+가장 간단한 방법은 싱글톤 빈이 프로토타입을 사용할 때 마다 스프링 컨테이너에 새로 요청하는 것이다.
+```java
+static class ClientBean {
+  @Autowired
+  private ApplicationContext ac;
+  public int logic() {
+      PrototypeBean prototypeBean = ac.getBean(PrototypeBean.class);
+      prototypeBean.addCount();
+      int count = prototypeBean.getCount();
+      return count;
+  } 
+}
+```
+- 의존관계를 외부에서 주입(DI) 받는게 아니라 이렇게 직접 필요한 의존관계를 찾는 것을 Dependency Lookup (DL) 의존관계 조회(탐색) 이라한다.
+- 그런데 이렇게 스프링의 애플리케이션 컨텍스트 전체를 주입받게 되면, 스프링 컨테이너에 종속적인 코드가 되고, 단위 테스트도 어려워진다.
+- 지금 필요한 기능은 지정한 프로토타입 빈을 컨테이너에서 대신 찾아주는 딱! DL 정도의 기능만 제공하는 무언가가 있으면 된다.
+
+### ObjectFactory, ObjectProvider
+지정한 빈을 컨테이너에서 대신 찾아주는 DL 서비스를 제공하는 것이 바로 ObjectProvider 이다. 
+- 참고로 과거에는 ObjectFactory 가 있었는데, 여기에 편의 기능을 추가해서 ObjectProvider 가 만들어졌다.
+
+```java
+@Autowired
+private ObjectProvider<PrototypeBean> prototypeBeanProvider;
+
+public int logic() {
+    PrototypeBean prototypeBean = prototypeBeanProvider.getObject();
+    prototypeBean.addCount();
+    int count = prototypeBean.getCount();
+    return count;
+}
+```
+- 스프링이 제공하는 기능을 사용하지만, 기능이 단순하므로 단위테스트를 만들거나 mock 코드를 만들기는 훨씬 쉬워진다.
+- ObjectProvider 는 지금 딱 필요한 DL 정도의 기능만 제공한다.
+
+**특징**
+- `ObjectFactory`: 기능이 단순, 별도의 라이브러리 필요 없음, 스프링에 의존
+- `ObjectProvider`: ObjectFactory 상속, 옵션, 스트림 처리등 편의 기능이 많고, 별도의 라이브러리 필요 없음, 스프링에 의존
+
+### JSR-330 Provider
+```groovy
+// 스프링 부트 3.0 미만
+implementation 'javax.inject:javax.inject:1'
+
+// 스프링 부트 3.0 이상
+jakarta.inject:jakarta.inject-api:2.0.1 
+```
+
+```java
+@Autowired
+private Provider<PrototypeBean> provider;
+
+public int logic() {
+    PrototypeBean prototypeBean = provider.get();
+    prototypeBean.addCount();
+    int count = prototypeBean.getCount();
+    return count;
+}
+```
+- provider 의 get() 을 호출하면 내부에서는 스프링 컨테이너를 통해 해당 빈을 찾아서 반환한다. (DL)
+- 자바 표준이고, 기능이 단순하므로 단위테스트를 만들거나 mock 코드를 만들기는 훨씬 쉬워진다. 
+- Provider 는 지금 딱 필요한 DL 정도의 기능만 제공한다.
+
+## 웹 스코프
