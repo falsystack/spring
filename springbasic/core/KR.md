@@ -787,3 +787,29 @@ public int logic() {
 - Provider 는 지금 딱 필요한 DL 정도의 기능만 제공한다.
 
 ## 웹 스코프
+**웹 스코프의 특징**
+
+- 웹 스코프는 웹 환경에서만 동작한다.
+- 웹 스코프는 프로토타입과 다르게 스프링이 해당 스코프의 종료시점까지 관리한다. 따라서 종료 메서드가 호출된다.
+
+### 웹 스코프 종류
+- `request`: HTTP 요청 하나가 들어오고 나갈 때 까지 유지되는 스코프, 각각의 HTTP 요청마다 별도의 빈 인스턴스가 생성되고, 관리된다.
+- `session`: HTTP Session과 동일한 생명주기를 가지는 스코프
+- `application`: 서블릿 컨텍스트( ServletContext )와 동일한 생명주기를 가지는 스코프
+- `websocket`: 웹 소켓과 동일한 생명주기를 가지는 스코프
+
+![](imgs/webscope.png)
+
+### 스코프와 프록시
+```java
+@Component
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class MyLogger {
+  ...
+}
+```
+여기가 핵심이다. `proxyMode = ScopedProxyMode.TARGET_CLASS` 를 추가해주자. 
+- 적용 대상이 인터페이스가 아닌 클래스면 `TARGET_CLASS` 를 선택
+- 적용 대상이 인터페이스면 `INTERFACES` 를 선택
+
+
