@@ -3,7 +3,6 @@ package jp.falsystack.helloboot;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +19,7 @@ public class HellobootApplication {
         // Spring container
         GenericApplicationContext applicationContext = new GenericApplicationContext();
         applicationContext.registerBean(HelloController.class); // bean 등록
+        applicationContext.registerBean(SimpleHelloService.class); // bean 등록
         applicationContext.refresh(); // initialize, 초기화작업
 
         TomcatServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
