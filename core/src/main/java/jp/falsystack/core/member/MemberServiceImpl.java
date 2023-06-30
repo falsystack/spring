@@ -2,6 +2,7 @@ package jp.falsystack.core.member;
 
 public class MemberServiceImpl implements MemberService{
 
+    // OCP, DIP違反
     private final MemberRepository memberRepository = new MemoryMemberRepository();
 
     @Override
