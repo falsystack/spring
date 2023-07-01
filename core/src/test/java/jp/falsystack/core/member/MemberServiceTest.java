@@ -3,17 +3,18 @@ package jp.falsystack.core.member;
 import jp.falsystack.core.AppConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MemberServiceTest {
 
-    AppConfig appConfig = new AppConfig();
+    AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
     MemberService memberService;
 
     @BeforeEach
     void beforeEach() {
-        memberService = appConfig.memberService();
+        memberService = ac.getBean(MemberService.class);
     }
 
     @Test

@@ -8,19 +8,20 @@ import jp.falsystack.core.member.MemberServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderServiceTest {
 
-    AppConfig appConfig = new AppConfig();
+    AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
     MemberService memberService;
     OrderService orderService;
 
     @BeforeEach
     void beforeEach() {
-        memberService = appConfig.memberService();
-        orderService = appConfig.orderService();
+        memberService = ac.getBean(MemberService.class);
+        orderService = ac.getBean(OrderService.class);
     }
 
     @Test
