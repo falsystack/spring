@@ -1,2 +1,3 @@
 jp.falsystack.config.autoconfig.TomcatWebServerConfig
+jp.falsystack.config.autoconfig.JettyWebServerConfig
 jp.falsystack.config.autoconfig.DispatcherServletConfig
