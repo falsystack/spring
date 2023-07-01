@@ -1,14 +1,20 @@
 package jp.falsystack.core.member;
 
-import org.assertj.core.api.Assertions;
+import jp.falsystack.core.AppConfig;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class MemberServiceTest {
 
-    MemberService memberService = new MemberServiceImpl();
+    AppConfig appConfig = new AppConfig();
+    MemberService memberService;
+
+    @BeforeEach
+    void beforeEach() {
+        memberService = appConfig.memberService();
+    }
 
     @Test
     void join() {
