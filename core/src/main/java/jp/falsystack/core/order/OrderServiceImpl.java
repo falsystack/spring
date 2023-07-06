@@ -5,12 +5,16 @@ import jp.falsystack.core.discount.FixDiscountPolicy;
 import jp.falsystack.core.member.Member;
 import jp.falsystack.core.member.MemberRepository;
 import jp.falsystack.core.member.MemoryMemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OrderServiceImpl implements OrderService{
 
     private final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy;
 
+    @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
