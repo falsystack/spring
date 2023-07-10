@@ -1,5 +1,6 @@
 package jp.falsystack.core.order;
 
+import jp.falsystack.core.annotation.MainDiscountPolicy;
 import jp.falsystack.core.discount.DiscountPolicy;
 import jp.falsystack.core.discount.FixDiscountPolicy;
 import jp.falsystack.core.member.Member;
