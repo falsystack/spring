@@ -4,10 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jp.falsystack.springmvc.basic.HelloData;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Map;
@@ -89,13 +86,20 @@ public class RequestParamController {
 
     @ResponseBody
     @RequestMapping("/model-attribute-v1")
-    public String modelAttributeV1(@RequestParam String username, @RequestParam int age) {
+    public String modelAttributeV1(@ModelAttribute HelloData helloData) {
         log.info("RequestParamController.modelAttributeV1");
-        HelloData helloData = new HelloData();
-        helloData.setUsername(username);
-        helloData.setAge(age);
 
         log.info("helloData = {}", helloData);
         return "OK";
     }
+
+    @ResponseBody
+    @RequestMapping("/model-attribute-v2")
+    public String modelAttributeV2(HelloData helloData) {
+        log.info("RequestParamController.modelAttributeV2");
+        log.info("helloData = {}", helloData);
+        return "OK";
+    }
+
+
 }
