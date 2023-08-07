@@ -11,7 +11,7 @@
     <li><a th:href="@{/hello(param1=${param1}, param2=${param2})}">hello query param</a></li>
     <li><a th:href="@{/hello/{param1}/{param2}(param1=${param1}, param2=${param2})}">path variable</a></li>
     <li><a th:href="@{/hello/{param1}(param1=${param1}, param2=${param2})}">path variable + query parameter</a></li>
-    <li><a th:href="@{|/hello/${param1}?param2=${param2}|}"> much better way </a></li>
+    <li><a th:href="@{|/hello/${param1}?param2=${param2}|}"> literal </a></li>
 </ul>
 </body>
 </html>
