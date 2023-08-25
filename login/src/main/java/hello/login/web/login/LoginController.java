@@ -6,12 +6,12 @@ import hello.login.web.SessionConst;
 import hello.login.web.session.SessionManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -73,7 +73,7 @@ public class LoginController {
         return "redirect:/";
     }
 
-    @PostMapping("login")
+//    @PostMapping("login")
     public String loginV3(@Valid @ModelAttribute LoginForm form,
                           BindingResult bindingResult,
                           HttpServletRequest request) {
@@ -93,6 +93,29 @@ public class LoginController {
 
         return "redirect:/";
     }
+
+    @PostMapping("login")
+    public String loginV4(@Valid @ModelAttribute LoginForm form,
+                          BindingResult bindingResult,
+                          @RequestParam("/") String redirectURL,
+                          HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            return "login/loginForm";
+        }
+
+        Member member = loginService.login(form.getLoginId(), form.getPassword());
+
+        if (member == null) {
+            bindingResult.reject("loginFail", "Wrong Id or Wrong Password");
+            return "login/loginForm";
+        }
+
+        HttpSession session = request.getSession(); // 없으면 새로 만들어서 반환, 있으면 있는것 반환
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+
+        return "redirect:" + redirectURL;
+    }
+
 
 
 //    @PostMapping("/logout")
