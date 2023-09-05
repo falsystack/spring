@@ -10,8 +10,9 @@ import java.sql.SQLException;
 public class DBConnectionUtil {
 
     public static Connection getConnection() {
-        try (Connection connection = DriverManager.getConnection(ConnectionConst.URL, ConnectionConst.USERNAME, ConnectionConst.PASSWORD)) {
-            log.info("class = {}, connection = {}",connection.getClass(), connection);
+        try {
+            Connection connection = DriverManager.getConnection(ConnectionConst.URL, ConnectionConst.USERNAME, ConnectionConst.PASSWORD);
+            log.info("class = {}, connection = {}", connection.getClass(), connection);
             return connection;
         } catch (SQLException e) {
             throw new IllegalStateException(e);
