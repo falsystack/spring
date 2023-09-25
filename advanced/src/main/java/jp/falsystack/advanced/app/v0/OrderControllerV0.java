@@ -1,4 +1,4 @@
-package jp.falsystack.advanced.v0;
+package jp.falsystack.advanced.app.v0;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
