@@ -1,8 +1,8 @@
-package jp.falsystack.advanced.template;
+package jp.falsystack.advanced.trace.template;
 
-import jp.falsystack.advanced.template.code.AbstractTemplate;
-import jp.falsystack.advanced.template.code.SubClassLogic1;
-import jp.falsystack.advanced.template.code.SubClassLogic2;
+import jp.falsystack.advanced.trace.template.code.AbstractTemplate;
+import jp.falsystack.advanced.trace.template.code.SubClassLogic1;
+import jp.falsystack.advanced.trace.template.code.SubClassLogic2;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
