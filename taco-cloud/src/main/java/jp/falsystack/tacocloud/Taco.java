@@ -2,11 +2,15 @@ package jp.falsystack.tacocloud;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.Data;
 
 @Data
 public class Taco {
+
+  private Long id;
+  private LocalDate createdAt;
 
   @NotNull
   @Size(min = 5, message = "Nmae must be at least 5 characters long")

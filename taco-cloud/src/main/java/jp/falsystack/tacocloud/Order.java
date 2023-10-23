@@ -3,11 +3,15 @@ package jp.falsystack.tacocloud;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import java.time.LocalDate;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
 @Data
 public class Order {
+
+  private Long id;
+  private LocalDate placedAt;
 
   @NotBlank(message = "Name is required")
   private String deliveryName;

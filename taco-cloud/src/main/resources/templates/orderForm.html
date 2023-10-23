@@ -22,7 +22,7 @@
   <h3>Deliver my taco masterpieces to...</h3>
 
   <label for="deliveryName">Name: </label>
-  <input th:field="*{deliveryName}" type="text"/>
+  <input id="deliveryName" th:field="*{deliveryName}" type="text"/>
   <span class="validationError"
         th:errors="*{deliveryName}"
         th:if="${#fields.hasErrors('deliveryName')}">Name Error</span>
