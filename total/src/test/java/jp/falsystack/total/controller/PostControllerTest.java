@@ -32,16 +32,6 @@ class PostControllerTest {
   private PostRepository postRepository;
 
   @Test
-  @DisplayName("/posts リクエスト時Hello Worldをプリントする。")
-  void get() throws Exception {
-    // expected
-    mockMvc.perform(MockMvcRequestBuilders.get("/posts"))
-        .andExpect(status().isOk())
-        .andExpect(content().string("Hello world"))
-        .andDo(print());
-  }
-
-  @Test
   @DisplayName("posts create")
   void postCreate() throws Exception {
     var request = PostCreate.builder()
