@@ -2,6 +2,7 @@ package jp.falsystack.total.service;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
 import jp.falsystack.total.domain.Post;
 import jp.falsystack.total.repository.PostRepository;
 import jp.falsystack.total.request.PostCreate;
@@ -31,6 +32,28 @@ class PostServiceTest {
     // then
     Post post = postRepository.findAll().get(0);
     assertThat(post.getTitle()).isEqualTo("타이틀 입니다.");
+  }
+
+  @Test
+  @DisplayName("글 여러개 조회")
+  void getList() {
+    // given
+    var post1 = Post.builder()
+        .title("타이틀 입니다.")
+        .content("내용 입니다.")
+        .build();
+    postRepository.save(post1);
+
+    var post2 = Post.builder()
+        .title("타이틀 입니다.")
+        .content("내용 입니다.")
+        .build();
+    postRepository.save(post2);
+    // when
+    var posts = postService.getList();
+
+    // then
+    assertThat(posts).hasSize(2);
   }
 
 }
