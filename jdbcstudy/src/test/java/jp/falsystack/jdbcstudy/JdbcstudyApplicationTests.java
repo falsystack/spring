@@ -1,10 +1,10 @@
-package jp.falsystack.jdbc;
+package jp.falsystack.jdbcstudy;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class JdbcApplicationTests {
+class JdbcstudyApplicationTests {
 
   @Test
   void contextLoads() {
