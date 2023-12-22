@@ -1,0 +1,13 @@
+package jp.falsystack.upload_review;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class UploadReviewApplication {
+
+  public static void main(String[] args) {
+    SpringApplication.run(UploadReviewApplication.class, args);
+  }
+
+}
