@@ -4,9 +4,10 @@ import static jp.falsystack.jdbcstudy.connection.ConnectionConst.PASSWORD;
 import static jp.falsystack.jdbcstudy.connection.ConnectionConst.URL;
 import static jp.falsystack.jdbcstudy.connection.ConnectionConst.USERNAME;
 
-import java.sql.Connection;
+import com.zaxxer.hikari.HikariDataSource;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -30,10 +31,22 @@ class ConnectionTest {
     var dataSource = new DriverManagerDataSource(URL, USERNAME,
         PASSWORD);
 
-    useDataSoure(dataSource);
+    useDataSource(dataSource);
   }
 
-  private void useDataSoure(DriverManagerDataSource dataSource) throws SQLException {
+  @Test
+  void dataSourceConnectionPool() throws SQLException {
+    var dataSource = new HikariDataSource();
+    dataSource.setJdbcUrl(URL);
+    dataSource.setUsername(USERNAME);
+    dataSource.setPassword(PASSWORD);
+    dataSource.setMaximumPoolSize(10);
+    dataSource.setPoolName("MyPool");
+
+    useDataSource(dataSource);
+  }
+
+  private void useDataSource(DataSource dataSource) throws SQLException {
     var con1 = dataSource.getConnection();
     var con2 = dataSource.getConnection();
     log.info("con1 = {}, class={}", con1, con1.getClass());
