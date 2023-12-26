@@ -1,13 +1,10 @@
 package jp.falsystack.jdbcstudy.service;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import jp.falsystack.jdbcstudy.domain.Member;
 import jp.falsystack.jdbcstudy.repository.MemberRepositoryV3;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionTemplate;
 
 /**
@@ -42,17 +39,6 @@ public class MemberServiceV3_2 {
     memberRepository.update(fromId, fromMember.getMoney() - money);
     validation(toMember);
     memberRepository.update(toId, toMember.getMoney() + money);
-  }
-
-  private static void release(Connection conn) {
-    if (conn != null) {
-      try {
-        conn.setAutoCommit(true); // 커넥션 풀 고려
-        conn.close();
-      } catch (Exception e) {
-        log.info("error", e);
-      }
-    }
   }
 
   private static void validation(Member toMember) {
