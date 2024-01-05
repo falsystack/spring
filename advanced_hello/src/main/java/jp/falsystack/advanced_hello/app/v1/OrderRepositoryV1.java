@@ -1,0 +1,39 @@
+package jp.falsystack.advanced_hello.app.v1;
+
+import jp.falsystack.advanced_hello.trace.TraceStatus;
+import jp.falsystack.advanced_hello.trace.hellotrace.HelloTraceV1;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+
+@Repository
+@RequiredArgsConstructor
+public class OrderRepositoryV1 {
+
+    private final HelloTraceV1 trace;
+
+    public void save(String itemId) {
+
+
+        TraceStatus status = null;
+        try {
+            status = trace.begin("OrderRepositoryV1.request");
+            // 저장 로직
+            if (itemId.equals("ex")) {
+                throw new IllegalStateException("例外発生！");
+            }
+            sleep(1000);
+            trace.end(status);
+        } catch (Exception e) {
+            trace.exception(status, e);
+            throw e; // 예외를 꼭 다시 던져주어야 한다.
+        }
+    }
+
+    private void sleep(int mills) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
