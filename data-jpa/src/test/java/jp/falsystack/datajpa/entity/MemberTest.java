@@ -1,6 +1,7 @@
 package jp.falsystack.datajpa.entity;
 
 import jakarta.persistence.EntityManager;
+import jp.falsystack.datajpa.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,9 @@ class MemberTest {
 
     @Autowired
     private EntityManager em;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Test
     void testEntity() {
@@ -46,5 +50,26 @@ class MemberTest {
             System.out.println("member = " + member);
             System.out.println("member.getTeam() = " + member.getTeam());
         }
+    }
+
+    @Test
+    void jpaEventBaseEntity() throws InterruptedException {
+        // given
+        Member member1 = new Member("member1");
+        memberRepository.save(member1); // @PrePersist 발생
+
+        Thread.sleep(1000);
+        member1.setUsername("member2");
+
+        em.flush(); // @PreUpdate 발생
+        em.clear();
+
+        // when
+        Member findMember = memberRepository.findById(member1.getId()).get();
+        // then
+        System.out.println("getCreatedDate = " + findMember.getCreatedDate());
+        System.out.println("getUpdatedDate = " + findMember.getLastModifiedDate());
+        System.out.println("createdBy = " + findMember.getCreatedBy());
+        System.out.println("modifiedBy = " + findMember.getLastModifiedBy());
     }
 }
