@@ -613,6 +613,22 @@ public class QuerydslBasicTest {
         assertThat(count).isEqualTo(3);
     }
 
+    @Test
+    void sqlFunctions() {
+        List<String> result = queryFactory
+                .select(
+                        Expressions.stringTemplate("function('replace', {0}, {1}, {2})",
+                                member.username, "member", "M"
+                        )
+                )
+                .from(member)
+                .fetch();
+
+        for (String s : result) {
+            System.out.println("s = " + s);
+        }
+    }
+
     private List<Member> searchMember2(String usernameCond, Integer ageCond) {
         return queryFactory
                 .selectFrom(member)
