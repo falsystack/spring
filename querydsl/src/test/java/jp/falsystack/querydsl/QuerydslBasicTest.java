@@ -575,6 +575,24 @@ public class QuerydslBasicTest {
         assertThat(result.size()).isEqualTo(1);
     }
 
+    @Test
+    void bulk() {
+        long count = queryFactory
+                .update(member)
+                .set(member.username, "비회원")
+                .where(member.age.lt(28))
+                .execute();
+        assertThat(count).isEqualTo(2);
+
+        em.flush();
+        em.clear();
+
+        List<Member> result = queryFactory.selectFrom(member).fetch();
+        for (Member member1 : result) {
+            System.out.println("member1 = " + member1);
+        }
+    }
+
     private List<Member> searchMember2(String usernameCond, Integer ageCond) {
         return queryFactory
                 .selectFrom(member)
