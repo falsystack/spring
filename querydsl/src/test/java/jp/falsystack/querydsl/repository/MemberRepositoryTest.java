@@ -1,9 +1,12 @@
 package jp.falsystack.querydsl.repository;
 
+import jp.falsystack.querydsl.dto.MemberSearchCond;
 import jp.falsystack.querydsl.entity.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
