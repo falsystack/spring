@@ -21,6 +21,9 @@ public class HellobootApplication {
     public static void main(String[] args) {
         ServletWebServerFactory factory = new TomcatServletWebServerFactory();
         WebServer webServer = factory.getWebServer(servletContext -> {
+
+            HelloController helloController = new HelloController();
+
             servletContext.addServlet("frontcontroller", new HttpServlet() {
                 @Override
                 protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,9 +31,11 @@ public class HellobootApplication {
                     if (req.getRequestURI().equals("/hello") && req.getMethod().equals(HttpMethod.GET.name())) {
                         String name = req.getParameter("name");
 
-                        resp.setStatus(HttpStatus.OK.value());
+                        String ret = helloController.hello(name);
+
+                        resp.setStatus(HttpStatus.OK.value()); // 원래는 아무 문제가 없다면 서블릿이 200 OK를 넣어줌
                         resp.setContentType(MediaType.TEXT_PLAIN_VALUE);
-                        resp.getWriter().write("Hello " + name);
+                        resp.getWriter().write(ret);
                     } else if (req.getRequestURI().equals("/user")) {
                         //
                     } else {
