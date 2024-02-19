@@ -19,6 +19,7 @@ public class HellobootApplication {
         // Spring Container 생성
         GenericApplicationContext applicationContext = new GenericApplicationContext();
         applicationContext.registerBean(HelloController.class);
+        applicationContext.registerBean(SimpleHelloService.class);
         applicationContext.refresh(); // 구성정보를 이용하여 컨테이너를 초기화하는 작업을 한다.
 
         ServletWebServerFactory factory = new TomcatServletWebServerFactory();
