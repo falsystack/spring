@@ -3,6 +3,7 @@ package com.msa.rental.domain.model;
 import com.msa.rental.domain.model.vo.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
