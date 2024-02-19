@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,25 +17,25 @@ import java.io.IOException;
 public class HellobootApplication {
 
     public static void main(String[] args) {
+        // Spring Container 생성
+        GenericApplicationContext applicationContext = new GenericApplicationContext();
+        applicationContext.registerBean(HelloController.class);
+        applicationContext.refresh(); // 구성정보를 이용하여 컨테이너를 초기화하는 작업을 한다.
+
         ServletWebServerFactory factory = new TomcatServletWebServerFactory();
         WebServer webServer = factory.getWebServer(servletContext -> {
-
-            HelloController helloController = new HelloController();
-
             servletContext.addServlet("frontcontroller", new HttpServlet() {
                 @Override
-                protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
                     // 인증, 보안, 다국어, 공통 기능 등등
                     if (req.getRequestURI().equals("/hello") && req.getMethod().equals(HttpMethod.GET.name())) {
                         String name = req.getParameter("name");
 
+                        HelloController helloController = applicationContext.getBean(HelloController.class);
                         String ret = helloController.hello(name);
 
-                        resp.setStatus(HttpStatus.OK.value()); // 원래는 아무 문제가 없다면 서블릿이 200 OK를 넣어줌
                         resp.setContentType(MediaType.TEXT_PLAIN_VALUE);
                         resp.getWriter().write(ret);
-                    } else if (req.getRequestURI().equals("/user")) {
-                        //
                     } else {
                         resp.setStatus(HttpStatus.NOT_FOUND.value());
                     }
