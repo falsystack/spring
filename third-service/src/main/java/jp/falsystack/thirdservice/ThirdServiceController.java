@@ -22,4 +22,9 @@ public class ThirdServiceController {
 
         return "Hello World in Third Service";
     }
+
+    @GetMapping("/check")
+    public String check() {
+        return "Hi, there. This is a message from Third Service";
+    }
 }
