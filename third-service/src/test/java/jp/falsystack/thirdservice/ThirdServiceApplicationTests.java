@@ -1,13 +1,13 @@
-package jp.falsystack.firstservice;
+package jp.falsystack.thirdservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class FirstServiceApplicationTests {
+class ThirdServiceApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }
