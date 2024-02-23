@@ -5,22 +5,24 @@ import jp.falsystack.userservice.vo.RequestUser;
 import jp.falsystack.userservice.vo.ResponseUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/user-service/")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final Environment env;
 
     @Value("${greeting.message}")
     private String message;
 
     @GetMapping("/health-check")
     public String status() {
-        return "It's Working in User Service";
+        return String.format("It's Working in User Service on %s", env.getProperty("local.server.port"));
     }
 
     @GetMapping("/welcome")

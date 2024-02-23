@@ -40,7 +40,7 @@ public class WebSecurity {
         return http.authorizeHttpRequests(
                 authorizeHttpRequest -> {
                     authorizeHttpRequest.requestMatchers(
-                                    mvc.pattern("/users/**")
+                                    mvc.pattern("/user-service/**")
                             ).permitAll()
                             .anyRequest().authenticated();
                 }
