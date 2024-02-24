@@ -19,18 +19,23 @@ public class HellobootApplication {
 
     public static void main(String[] args) {
         // Spring Container 생성
-        GenericWebApplicationContext applicationContext = new GenericWebApplicationContext();
+        GenericWebApplicationContext applicationContext = new GenericWebApplicationContext() {
+            @Override
+            protected void onRefresh() {
+                super.onRefresh();
+
+                ServletWebServerFactory factory = new TomcatServletWebServerFactory();
+                WebServer webServer = factory.getWebServer(servletContext -> {
+                    servletContext.addServlet("dispatcherServlet",
+                            new DispatcherServlet(this)
+                    ).addMapping("/*");
+                });
+                webServer.start();
+            }
+        };
         applicationContext.registerBean(HelloController.class);
         applicationContext.registerBean(SimpleHelloService.class);
         applicationContext.refresh(); // 구성정보를 이용하여 컨테이너를 초기화하는 작업을 한다.
-
-        ServletWebServerFactory factory = new TomcatServletWebServerFactory();
-        WebServer webServer = factory.getWebServer(servletContext -> {
-            servletContext.addServlet("dispatcherServlet",
-                    new DispatcherServlet(applicationContext)
-                    ).addMapping("/*");
-        });
-        webServer.start();
     }
 
 }
