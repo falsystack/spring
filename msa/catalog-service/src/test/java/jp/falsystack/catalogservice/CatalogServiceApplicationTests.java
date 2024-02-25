@@ -1,10 +1,10 @@
-package jp.falsystack.secondservice;
+package jp.falsystack.catalogservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SecondServiceApplicationTests {
+class CatalogServiceApplicationTests {
 
     @Test
     void contextLoads() {
