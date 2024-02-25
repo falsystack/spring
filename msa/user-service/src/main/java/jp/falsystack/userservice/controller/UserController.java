@@ -9,6 +9,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user-service/")
 @RequiredArgsConstructor
@@ -34,5 +36,15 @@ public class UserController {
     @PostMapping("/users")
     public ResponseUser createUser(@RequestBody RequestUser user) {
         return userService.createUser(user.toUserDto());
+    }
+
+    @GetMapping("/users")
+    public List<ResponseUser> getUsers() {
+        return userService.getUserByAll();
+    }
+
+    @GetMapping("/users/{userId}")
+    public ResponseUser getUser(@PathVariable String userId) {
+        return userService.getUserByUserId(userId);
     }
 }
