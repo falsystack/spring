@@ -1,7 +1,11 @@
 package jp.falsystack.userservice.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -16,7 +20,10 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 
 @Configuration
 @EnableWebSecurity(debug = true)
+@RequiredArgsConstructor
 public class WebSecurity {
+
+    private final ObjectMapper objectMapper;
 
     @Bean
     MvcRequestMatcher.Builder mvc(
@@ -37,20 +44,32 @@ public class WebSecurity {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
+
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+
+        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
+
         return http.authorizeHttpRequests(
-                authorizeHttpRequest -> {
-                    authorizeHttpRequest.requestMatchers(
-                                    mvc.pattern("/user-service/**")
-                            ).permitAll()
-                            .anyRequest().authenticated();
-                }
-        ).csrf(AbstractHttpConfigurer::disable)
+                        authorizeHttpRequest -> {
+                            authorizeHttpRequest.requestMatchers(
+                                            mvc.pattern("/user-service/**")
+                                    ).permitAll()
+                                    .anyRequest().authenticated();
+                        }
+                ).addFilter(getAuthenticationFilter(authenticationManager, objectMapper)).csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    private AuthenticationFilter getAuthenticationFilter(AuthenticationManager authenticationManager, ObjectMapper objectMapper) {
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(objectMapper);
+        authenticationFilter.setAuthenticationManager(authenticationManager);
+        return authenticationFilter;
     }
 
 }
