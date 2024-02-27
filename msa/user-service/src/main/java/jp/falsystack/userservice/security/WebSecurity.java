@@ -1,6 +1,8 @@
 package jp.falsystack.userservice.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jp.falsystack.userservice.entity.User;
+import jp.falsystack.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +12,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -64,6 +68,16 @@ public class WebSecurity {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
+        return username -> {
+            User user = userRepository.findByEmail(username).orElseThrow(() ->
+                    // 스프링이 기본제공하는 예외 사용
+                    new UsernameNotFoundException(username + "을 찾을 수 없습니다."));
+            return new UserPrincipal(user);
+        };
     }
 
     private AuthenticationFilter getAuthenticationFilter(AuthenticationManager authenticationManager, ObjectMapper objectMapper) {
