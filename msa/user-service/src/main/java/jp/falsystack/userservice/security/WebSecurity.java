@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -28,6 +29,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 public class WebSecurity {
 
     private final ObjectMapper objectMapper;
+    private final UserRepository userRepository;
 
     @Bean
     MvcRequestMatcher.Builder mvc(
@@ -48,20 +50,16 @@ public class WebSecurity {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
-
-        AuthenticationManagerBuilder authenticationManagerBuilder =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
-
-        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
-
         return http.authorizeHttpRequests(
                         authorizeHttpRequest -> {
                             authorizeHttpRequest.requestMatchers(
-                                            mvc.pattern("/user-service/**")
+                                            mvc.pattern("/**")
                                     ).permitAll()
                                     .anyRequest().authenticated();
                         }
-                ).addFilter(getAuthenticationFilter(authenticationManager, objectMapper)).csrf(AbstractHttpConfigurer::disable)
+                ).addFilter(new AuthenticationFilter(objectMapper))
+                .authenticationManager(this.authenticationManager())
+                .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
 
@@ -71,19 +69,20 @@ public class WebSecurity {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository) {
+    public UserDetailsService userDetailsService() {
         return username -> {
             User user = userRepository.findByEmail(username).orElseThrow(() ->
-                    // 스프링이 기본제공하는 예외 사용
                     new UsernameNotFoundException(username + "을 찾을 수 없습니다."));
             return new UserPrincipal(user);
         };
     }
 
-    private AuthenticationFilter getAuthenticationFilter(AuthenticationManager authenticationManager, ObjectMapper objectMapper) {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(objectMapper);
-        authenticationFilter.setAuthenticationManager(authenticationManager);
-        return authenticationFilter;
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        // form이 아니기 때문에 Dao 방식을 사용
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService());
+        provider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(provider);
     }
-
 }
