@@ -57,7 +57,7 @@ public class WebSecurity {
                                     ).permitAll()
                                     .anyRequest().authenticated();
                         }
-                ).addFilter(new AuthenticationFilter(objectMapper))
+                ).addFilter(new AuthenticationFilter(objectMapper, this.authenticationManager()))
                 .authenticationManager(this.authenticationManager())
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
