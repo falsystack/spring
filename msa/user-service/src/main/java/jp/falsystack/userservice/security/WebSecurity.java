@@ -18,6 +18,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
@@ -49,7 +51,10 @@ public class WebSecurity {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   MvcRequestMatcher.Builder mvc,
+                                                   AuthenticationFilter authenticationFilter,
+                                                   AuthenticationManager authenticationManager) throws Exception {
         return http.authorizeHttpRequests(
                         authorizeHttpRequest -> {
                             authorizeHttpRequest.requestMatchers(
@@ -57,10 +62,21 @@ public class WebSecurity {
                                     ).permitAll()
                                     .anyRequest().authenticated();
                         }
-                ).addFilter(new AuthenticationFilter(objectMapper, this.authenticationManager()))
-                .authenticationManager(this.authenticationManager())
+                ).addFilter(authenticationFilter)
+                .authenticationManager(authenticationManager)
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
+    }
+
+    @Bean
+    public AuthenticationFilter authenticationFilter(AuthenticationManager authenticationManager) {
+        System.out.println(authenticationManager);
+        AuthenticationFilter filter = new AuthenticationFilter(objectMapper);
+        filter.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler("/"));
+        filter.setSecurityContextRepository(new HttpSessionSecurityContextRepository());
+        filter.setAuthenticationManager(authenticationManager);
+
+        return filter;
     }
 
     @Bean

@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jp.falsystack.userservice.entity.User;
 import jp.falsystack.userservice.vo.RequestLogin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final ObjectMapper objectMapper;
-    private final AuthenticationManager authenticationManager;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -28,14 +28,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             RequestLogin creds = objectMapper.readValue(request.getInputStream(), RequestLogin.class);
 
             UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.authenticated(creds.getEmail(), creds.getPassword(), new ArrayList<>());
-            return authenticationManager.authenticate(token);
+            return this.getAuthenticationManager().authenticate(token);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        super.successfulAuthentication(request, response, chain, authResult);
     }
 }
