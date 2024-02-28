@@ -6,6 +6,7 @@ import jp.falsystack.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -32,6 +33,7 @@ public class WebSecurity {
 
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
+    private final Environment env;
 
     @Bean
     MvcRequestMatcher.Builder mvc(
@@ -71,7 +73,7 @@ public class WebSecurity {
     @Bean
     public AuthenticationFilter authenticationFilter(AuthenticationManager authenticationManager) {
         System.out.println(authenticationManager);
-        AuthenticationFilter filter = new AuthenticationFilter(objectMapper);
+        AuthenticationFilter filter = new AuthenticationFilter(objectMapper,env);
         filter.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler("/"));
         filter.setSecurityContextRepository(new HttpSessionSecurityContextRepository());
         filter.setAuthenticationManager(authenticationManager);
