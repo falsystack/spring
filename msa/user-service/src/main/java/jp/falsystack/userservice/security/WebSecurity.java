@@ -60,7 +60,8 @@ public class WebSecurity {
         return http.authorizeHttpRequests(
                         authorizeHttpRequest -> {
                             authorizeHttpRequest.requestMatchers(
-                                            mvc.pattern("/**")
+                                            mvc.pattern("/**"),
+                                            mvc.pattern("/actuator/**")
                                     ).permitAll()
                                     .anyRequest().authenticated();
                         }

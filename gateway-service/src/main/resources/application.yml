@@ -9,6 +9,8 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 spring:
+  profiles:
+    active: prod
   application:
     name: apigateway-service
   cloud:
@@ -20,6 +22,14 @@ spring:
             preLogger: true
             postLogger: true
       routes:
+          - id: user-service
+            uri: lb://USER-SERVICE
+            predicates:
+              - Path=/user-service/actuator/**
+              - Method=POST,GET
+            filters:
+              - RemoveRequestHeader=Cookie
+              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
           - id: user-service
             uri: lb://USER-SERVICE
             predicates:
@@ -77,5 +87,11 @@ spring:
                   preLogger: true
                   postLogger: true
 
-token:
-  secret: z7N83jVxDfuNXAbhvX69I6+ENfpEhHzP0Mw6v/ukaTE=
+#token:
+#  secret: z7N83jVxDfuNXAbhvX69I6+ENfpEhHzP0Mw6v/ukaTE=
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, httptrace

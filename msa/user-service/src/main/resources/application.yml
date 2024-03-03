@@ -1,6 +1,8 @@
 server:
   port: 0
 spring:
+  profiles:
+    active: dev
   datasource:
     url: jdbc:h2:mem:testdb
     username: sa
@@ -26,6 +28,14 @@ eureka:
 greeting:
   message: Welcome to the Simple E-commerce
 
-token:
-  expiration_time: 86400000
-  secret: z7N83jVxDfuNXAbhvX69I6+ENfpEhHzP0Mw6v/ukaTE=
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans
+
+
+# spring-cloud-configで持ってくる町に変更
+#token:
+#  expiration_time: 86400000
+#  secret: z7N83jVxDfuNXAbhvX69I6+ENfpEhHzP0Mw6v/ukaTE=
