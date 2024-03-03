@@ -1,6 +1,10 @@
 server:
   port: 0
 spring:
+  rabbitmq:
+    port: 5672
+    username: guest
+    password: guest
   profiles:
     active: dev
   datasource:
@@ -32,7 +36,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans
+        include: refresh, health, beans, busrefresh
 
 
 # spring-cloud-configで持ってくる町に変更

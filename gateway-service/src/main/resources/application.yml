@@ -9,6 +9,10 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 spring:
+  rabbitmq:
+    port: 5672
+    username: guest
+    password: guest
   profiles:
     active: prod
   application:
