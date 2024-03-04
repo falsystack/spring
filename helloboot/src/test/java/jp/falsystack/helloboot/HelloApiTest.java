@@ -22,4 +22,14 @@ public class HelloApiTest {
         assertThat(resp.getBody()).isEqualTo("Hello Spring");
 
     }
+
+    @Test
+    void failHelloApi() {
+        TestRestTemplate rest = new TestRestTemplate();
+        ResponseEntity<String> resp =
+                rest.getForEntity("http://localhost:8080/hello?name=", String.class, "");
+
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
 }
