@@ -3,3 +3,4 @@ jp.falsystack.config.autoconfig.TomcatWebServerConfig
 jp.falsystack.config.autoconfig.JettyWebServerConfig
 jp.falsystack.config.autoconfig.PropertyPlaceholderConfig
 jp.falsystack.config.autoconfig.PropertyPostProcessorConfig
+jp.falsystack.config.autoconfig.DataSourceConfig
