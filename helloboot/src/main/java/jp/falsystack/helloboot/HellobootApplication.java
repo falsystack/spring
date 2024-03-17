@@ -1,12 +1,12 @@
 package jp.falsystack.helloboot;
 
 import jakarta.annotation.PostConstruct;
-import jp.falsystack.config.MySpringBootApplication;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-@MySpringBootApplication
+@SpringBootApplication
 @RequiredArgsConstructor
 public class HellobootApplication {
 
