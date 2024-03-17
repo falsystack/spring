@@ -19,7 +19,18 @@ class HelloServiceTest {
 
     @UniTest
     void simpleHelloService() {
-        SimpleHelloService helloService = new SimpleHelloService();
+        HelloRepository helloRepositoryStub = new HelloRepository() {
+            @Override
+            public Hello findHello(String name) {
+                return null;
+            }
+
+            @Override
+            public void increaseCount(String name) {
+
+            }
+        };
+        SimpleHelloService helloService = new SimpleHelloService(helloRepositoryStub);
         String ret = helloService.sayHello("Spring");
 
         assertThat(ret).isEqualTo("Hello Spring");
