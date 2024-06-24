@@ -1,4 +1,4 @@
-package feature;
+package memory;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
