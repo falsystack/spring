@@ -23,3 +23,7 @@ G.idea/sonarlint/issuestore/f/0/f07866736216be0ee2aba49e392191aeae700a35,b/f/bf
 ,src/main/java/hello/ActuatorApplication.java,5/5/55842c9901f7cd159bdf581e32d5fc45ea7a916f
 X
 (gradle/wrapper/gradle-wrapper.properties,f/b/fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
+V
+&src/main/java/hello/LogController.java,4/c/4c571cc8ec04bdb36438742306a4d2175442387d
+a
+1src/main/java/hello/controller/LogController.java,f/f/ffd7014e925cb5c9beb4bb64d0d2879ceceae928
