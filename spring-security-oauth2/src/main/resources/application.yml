@@ -17,7 +17,7 @@ spring:
             authorization-grant-type: authorization_code # OAuth2.0 권한 부여 타입
             client-authentication-method: client_secret_basic # 클라리언트 자격증명 전송방식
             scope: # 리소스에 접근 제한 범위
-              - openid
+              #              - openid
               - profile
               - email
         provider: ## 공급자 설정

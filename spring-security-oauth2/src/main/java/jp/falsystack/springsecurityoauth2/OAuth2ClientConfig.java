@@ -4,10 +4,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 public class OAuth2ClientConfig {
+
+  private final InMemoryClientRegistrationRepository clientRegistrationRepository;
+
+  public OAuth2ClientConfig(InMemoryClientRegistrationRepository clientRegistrationRepository) {
+    this.clientRegistrationRepository = clientRegistrationRepository;
+  }
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -21,7 +30,19 @@ public class OAuth2ClientConfig {
 //                .authenticated());
 //    http.oauth2Login(oauth2 -> oauth2.loginPage("/loginPage"));
     http.oauth2Login(Customizer.withDefaults());
+    http.logout(logout ->
+            logout.logoutSuccessHandler(oidcLogoutSuccessHandler())
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .deleteCookies("JSESSIONID"));
     return http.build();
+  }
+
+  private LogoutSuccessHandler oidcLogoutSuccessHandler() {
+    OidcClientInitiatedLogoutSuccessHandler successHandler = new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
+    successHandler.setPostLogoutRedirectUri("http://localhost:8080/login");
+
+    return successHandler;
   }
 
 //  @Bean
