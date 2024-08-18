@@ -23,12 +23,14 @@ public class OAuth2ClientConfig {
     http.authorizeRequests(
         authRequest ->
             authRequest
-//                .requestMatchers("/loginPage")
-//                .permitAll()
+                .requestMatchers("/loginPage")
+                .permitAll()
                 .anyRequest()
-                    .permitAll());
-//                .authenticated());
-//    http.oauth2Login(oauth2 -> oauth2.loginPage("/loginPage"));
+                .authenticated());
+    http.oauth2Login(oauth2 ->
+            oauth2.loginPage("/loginPage")
+                    .loginProcessingUrl("/login/v2/oauth2/code/*")
+    );
     http.oauth2Login(Customizer.withDefaults());
     http.logout(logout ->
             logout.logoutSuccessHandler(oidcLogoutSuccessHandler())

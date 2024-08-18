@@ -1,13 +1,13 @@
-package jp.co.falsystack.ssiach2ex1;
+package jp.co.falsystack.springsecurityinaction;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SsiaCh2Ex1Application {
+public class SpringSecurityInActionApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SsiaCh2Ex1Application.class, args);
+        SpringApplication.run(SpringSecurityInActionApplication.class, args);
     }
 
 }

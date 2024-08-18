@@ -1,10 +1,10 @@
-package jp.co.falsystack.ssiach2ex1;
+package jp.co.falsystack.springsecurityinaction;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SsiaCh2Ex1ApplicationTests {
+class SpringSecurityInActionApplicationTests {
 
     @Test
     void contextLoads() {
