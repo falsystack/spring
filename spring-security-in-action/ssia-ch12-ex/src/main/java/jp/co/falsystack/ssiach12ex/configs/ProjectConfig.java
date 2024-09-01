@@ -16,8 +16,8 @@ public class ProjectConfig {
     private ClientRegistration clientRegistration() {
         return CommonOAuth2Provider.GITHUB
                 .getBuilder("github")
-                .clientId("Ov23li7uBObNotzsf7qk")
-                .clientSecret("58ea16e5d94bab408526799cabaf33a04c38100b")
+                .clientId("clientId")
+                .clientSecret("clientSecret")
                 .build();
     }
 
