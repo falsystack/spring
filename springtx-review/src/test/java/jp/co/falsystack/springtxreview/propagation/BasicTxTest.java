@@ -86,6 +86,20 @@ public class BasicTxTest {
         txManager.commit(outer);
     }
 
+    @Test
+    void outer_rollback() {
+        log.info("외부 트랜잭션 시작");
+        var outer = txManager.getTransaction(new DefaultTransactionDefinition());
+
+        log.info("내부 트랜잭션 시작");
+        var inner = txManager.getTransaction(new DefaultTransactionDefinition());
+        log.info("내부 트랜잭션 커밋");
+        txManager.commit(inner);
+
+        log.info("외부 트랜잭션 롤백");
+        txManager.rollback(outer);
+    }
+
     @TestConfiguration
     static class Config {
 
