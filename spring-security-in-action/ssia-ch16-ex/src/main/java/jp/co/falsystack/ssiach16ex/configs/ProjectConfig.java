@@ -2,6 +2,9 @@ package jp.co.falsystack.ssiach16ex.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.PermissionEvaluator;
+import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -20,11 +23,11 @@ public class ProjectConfig {
 
         var user1 = User.withUsername("natalie")
                 .password("12345")
-                .authorities("read")
+                .roles("admin")
                 .build();
         var user2 = User.withUsername("emma")
                 .password("12345")
-                .authorities("write")
+                .roles("manager")
                 .build();
 
         var userDetailsManager = new InMemoryUserDetailsManager();
@@ -37,5 +40,12 @@ public class ProjectConfig {
     @Bean
     protected PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
+    }
+
+    @Bean
+    protected MethodSecurityExpressionHandler methodSecurityExpressionHandler() {
+        var handler = new DefaultMethodSecurityExpressionHandler();
+        handler.setPermissionEvaluator(new DocumentPermissionEvaluator());
+        return handler;
     }
 }
