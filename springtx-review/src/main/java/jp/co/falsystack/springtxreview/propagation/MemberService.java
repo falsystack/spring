@@ -3,6 +3,7 @@ package jp.co.falsystack.springtxreview.propagation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -12,6 +13,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final LogRepository logRepository;
 
+    @Transactional
     public void joinV1(String username) {
         var member = new Member(username);
         var logMessage = new Log(username);
@@ -25,6 +27,7 @@ public class MemberService {
         log.info("== logRepository 호출 종료 ==");
     }
 
+    @Transactional
     public void joinV2(String username) {
         var member = new Member(username);
         var logMessage = new Log(username);
