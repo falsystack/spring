@@ -10,7 +10,7 @@ public class KeycloakUser extends OAuth2ProviderUser {
 
     @Override
     public String getId() {
-        return getAttributes().get("id").toString();
+        return getAttributes().get("sub").toString();
     }
 
     @Override

@@ -40,6 +40,7 @@ public abstract class AbstractOAuth2UserService {
         if (foundUser.isEmpty()) {
             var registrationId = userRequest.getClientRegistration().getClientId();
             userService.register(registrationId, providerUser);
+            return;
         }
 
         System.out.println("foundUser = " + foundUser.get());
