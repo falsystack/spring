@@ -8,6 +8,8 @@ spring:
     oauth2:
       client:
         registration:
+          google:
+
           keycloak:
             client-id: oauth2-client-app
             client-secret: eoOgG57DSNmd1fD8q7vhCz94Ocv6DbxW
@@ -19,6 +21,44 @@ spring:
               - openid
               - profile
               - email
+#          keycloakWithPKCE:
+#            clientId: oauth2-client-app2
+#            clientSecret: i08K7U5AIITwaiUcuvk2fWrhW9UMfsWJ
+#            clientName: oauth2-client-app2
+#            authorizationGrantType: authorization_code
+##            clientAuthenticationMethod: client_secret_basic
+#            clientAuthenticationMethod: none
+#            redirectUri: http://localhost:8081/login/oauth2/code/keycloak
+#            provider: keycloak
+#            scope:
+#              - openid
+#              - profile
+#              - email
+#          keycloakWithPKCE2:
+#            clientId: oauth2-client-app-pkce
+##            clientSecret: i08K7U5AIITwaiUcuvk2fWrhW9UMfsWJ
+#            clientName: oauth2-client-app-pkce
+#            authorizationGrantType: authorization_code
+#            #            clientAuthenticationMethod: client_secret_basic
+#            clientAuthenticationMethod: none
+#            redirectUri: http://localhost:8081/login/oauth2/code/keycloak
+#            provider: keycloak
+#            scope:
+#              - openid
+#              - profile
+#              - email
+#          keycloak2:
+#            clientId: oauth2-client-app3
+##            clientSecret: tynI8eYUw4H1fJYxwLQ36XhFC1Ge1w1x
+#            clientName: oauth2-client-app3
+#            authorizationGrantType: implicit
+#            clientAuthenticationMethod: none
+#            redirectUri: http://localhost:8081/home
+#            provider: keycloak
+#            scope:
+#              - openid
+#              - profile
+#              - email
         provider:
           keycloak:
             authorization-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/auth
