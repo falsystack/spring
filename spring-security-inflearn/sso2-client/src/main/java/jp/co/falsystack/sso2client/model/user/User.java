@@ -1,4 +1,4 @@
-package jp.co.falsystack.sso2client.model;
+package jp.co.falsystack.sso2client.model.user;
 
 import lombok.Builder;
 import lombok.Data;

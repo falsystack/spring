@@ -1,5 +1,6 @@
-package jp.co.falsystack.sso2client.model;
+package jp.co.falsystack.sso2client.model.social;
 
+import jp.co.falsystack.sso2client.model.OAuth2ProviderUser;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 

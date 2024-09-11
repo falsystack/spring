@@ -1,7 +1,7 @@
 package jp.co.falsystack.sso2client.service;
 
 import jp.co.falsystack.sso2client.model.ProviderUser;
-import jp.co.falsystack.sso2client.model.User;
+import jp.co.falsystack.sso2client.model.user.User;
 import jp.co.falsystack.sso2client.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

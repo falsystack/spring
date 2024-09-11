@@ -1,6 +1,6 @@
 package jp.co.falsystack.sso2client.repository;
 
-import jp.co.falsystack.sso2client.model.User;
+import jp.co.falsystack.sso2client.model.user.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;

@@ -1,5 +1,6 @@
 package jp.co.falsystack.sso2client.service;
 
+import jp.co.falsystack.sso2client.converter.ProviderUserRequest;
 import jp.co.falsystack.sso2client.repository.UserRepository;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -21,7 +22,8 @@ public class CustomOAuth2UserService extends AbstractOAuth2UserService implement
         var oAuth2UserService = new DefaultOAuth2UserService();
         var oAuth2User = oAuth2UserService.loadUser(userRequest);
 
-        var providerUser = super.providerUser(clientRegistration, oAuth2User);
+        var providerUserRequest = new ProviderUserRequest(clientRegistration, oAuth2User);
+        var providerUser = super.providerUser(providerUserRequest);
 
         // 회원가입
         super.register(providerUser, userRequest);
