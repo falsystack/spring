@@ -10,6 +10,8 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.security.KeyPairGenerator;
+
 @RequiredArgsConstructor
 @Configuration
 public class OAuth2ResourceServerConfig {
@@ -18,6 +20,9 @@ public class OAuth2ResourceServerConfig {
 
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+
+
         http.authorizeHttpRequests(request -> request.anyRequest().authenticated());
         http.oauth2ResourceServer(config -> config.jwt(Customizer.withDefaults()));
         return http.build();
