@@ -2,12 +2,8 @@ package jp.co.falsystack.ss6inflearn.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
@@ -17,17 +13,27 @@ public class SecurityConfig {
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults());
-        return http.build();
-    }
+                .formLogin(form ->
+                        form
+//                                .loginPage("/login")
+                                .loginProcessingUrl("/loginProc")
+                                .defaultSuccessUrl("/", true) // true 이면 무조건 지정한 url 로 리디렉트 되지만 false 일 경우 이전 요청 url 로 리디렉트 될 수 있다
+                                .failureUrl("/failed")
+                                .usernameParameter("username")
+                                .passwordParameter("password")
+                                // defaultSuccessUrl 의 설정을 override 한다.
+                                .successHandler((request, response, authentication) -> {
+                                    System.out.println("authentication = " + authentication.getPrincipal().toString());
+                                    response.sendRedirect("/home");
+                                })
+                                // failureUrl 의 설정을 override 한다.
+                                .failureHandler((request, response, exception) -> {
+                                    System.out.println("exception = " + exception.getMessage());
+                                    response.sendRedirect("/login");
+                                })
+                                .permitAll()
+                );
 
-    @Bean
-    protected UserDetailsService userDetailsService() {
-        // 여러명의 유저를 만드는 것도 가능
-        var user = User.withUsername("user")
-                .password("1q2w3e4r")
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(user);
+        return http.build();
     }
 }
