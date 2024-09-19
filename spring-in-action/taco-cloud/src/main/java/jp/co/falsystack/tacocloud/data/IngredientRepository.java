@@ -4,6 +4,6 @@ import jp.co.falsystack.tacocloud.Ingredient;
 
 public interface IngredientRepository {
     Iterable<Ingredient> findAl();
-    Ingredient findById(int id);
+    Ingredient findById(String id);
     Ingredient save(Ingredient ingredient);
 }

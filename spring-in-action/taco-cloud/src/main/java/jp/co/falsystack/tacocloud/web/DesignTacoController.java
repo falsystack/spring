@@ -2,16 +2,16 @@ package jp.co.falsystack.tacocloud.web;
 
 import jakarta.validation.Valid;
 import jp.co.falsystack.tacocloud.Ingredient;
+import jp.co.falsystack.tacocloud.Order;
 import jp.co.falsystack.tacocloud.Taco;
 import jp.co.falsystack.tacocloud.data.IngredientRepository;
+import jp.co.falsystack.tacocloud.data.TacoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +19,22 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+@SessionAttributes("order")
 @RequestMapping("/design")
 public class DesignTacoController {
 
     private final IngredientRepository ingredientRepository;
+    private final TacoRepository tacoRepository;
+
+    @ModelAttribute(name = "order")
+    public Order order() {
+        return new Order();
+    }
+
+    @ModelAttribute(name = "taco")
+    public Taco taco() {
+        return new Taco();
+    }
 
     @GetMapping
     public String showDesignForm(Model model) {
@@ -55,12 +67,13 @@ public class DesignTacoController {
     }
 
     @PostMapping
-    public String processDesign(@Valid Taco design, Errors errors) {
+    public String processDesign(@Valid Taco design, Errors errors, @ModelAttribute Order order) {
         if (errors.hasErrors()) {
             return "design";
         }
 
-        log.info("processDesign: {}", design);
+        var saved = tacoRepository.save(design);
+        order.addDesign(saved);
 
         return "redirect:/orders/current";
     }

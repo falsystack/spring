@@ -4,9 +4,9 @@ import jp.co.falsystack.tacocloud.Ingredient;
 import jp.co.falsystack.tacocloud.Taco;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -40,14 +40,16 @@ public class JdbcTacoRepository implements TacoRepository {
 
     private long saveTacoInfo(Taco taco) {
         taco.setCreatedAt(new Date());
-        var psc = new PreparedStatementCreatorFactory(
+        PreparedStatementCreatorFactory factory = new PreparedStatementCreatorFactory(
                 "insert into Taco(name, createdAt) values (?,?)",
                 Types.VARCHAR, Types.TIMESTAMP
-        ).newPreparedStatementCreator(
+        );
+        factory.setGeneratedKeysColumnNames("id");
+        var psc = factory.newPreparedStatementCreator(
                 Arrays.asList(taco.getName(), new Timestamp(taco.getCreatedAt().getTime())
                 ));
 
-        var keyHolder = new GeneratedKeyHolder();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(psc, keyHolder);
         return keyHolder.getKey().longValue();
     }
