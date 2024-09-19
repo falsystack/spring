@@ -53,7 +53,7 @@ public class DesignTacoController {
 
         var ingredients = new ArrayList<Ingredient>();
         ingredientRepository
-                .findAl()
+                .findAll()
                 .iterator()
                 .forEachRemaining(ingredients::add);
 
