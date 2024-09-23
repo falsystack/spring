@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jp.co.falsystack.querydslreview.entity.Member;
+import jp.co.falsystack.querydslreview.entity.QMember;
 import jp.co.falsystack.querydslreview.entity.Team;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,11 +56,10 @@ public class QueryDslBasicTest {
 
     @Test
     void startQueryDSL() {
-        // var m = new QMember("m"); // 어떤 QMember 인지 구분하는 alias 를 준다.
-        // var m2 = QMember.member; // alias 를 따로 안주고 기본 정의도어 있는걸 사용하면 된다.
+        var m1 = new QMember("m1");
         var findMember = query
-                .selectFrom(member)
-                .where(member.username.eq("member1"))
+                .selectFrom(m1)
+                .where(m1.username.eq("member1"))
                 .fetchOne();
         assertThat(findMember.getUsername()).isEqualTo("member1");
     }
