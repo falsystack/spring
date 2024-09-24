@@ -4,8 +4,10 @@ import jakarta.validation.Valid;
 import jp.co.falsystack.tacocloud.Ingredient;
 import jp.co.falsystack.tacocloud.Order;
 import jp.co.falsystack.tacocloud.Taco;
+import jp.co.falsystack.tacocloud.User;
 import jp.co.falsystack.tacocloud.data.IngredientRepository;
 import jp.co.falsystack.tacocloud.data.TacoRepository;
+import jp.co.falsystack.tacocloud.data.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +28,7 @@ public class DesignTacoController {
 
     private final IngredientRepository ingredientRepository;
     private final TacoRepository tacoRepository;
+    private final UserRepository userRepository;
 
     @ModelAttribute(name = "order")
     public Order order() {
@@ -37,7 +41,7 @@ public class DesignTacoController {
     }
 
     @GetMapping
-    public String showDesignForm(Model model) {
+    public String showDesignForm(Model model, Principal principal) {
 //        var ingredients = Arrays.asList(
 //                new Ingredient("FLTO", "Flour Tortilla", Ingredient.Type.WRAP),
 //                new Ingredient("COTO", "Corn Tortilla", Ingredient.Type.WRAP),
@@ -61,7 +65,10 @@ public class DesignTacoController {
         for (Ingredient.Type type : types) {
             model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
         }
-        model.addAttribute("taco", new Taco());
+//        model.addAttribute("taco", new Taco());
+        var username = principal.getName();
+        var user = userRepository.findByUsername(username);
+        model.addAttribute("user", user);
 
         return "design";
     }
