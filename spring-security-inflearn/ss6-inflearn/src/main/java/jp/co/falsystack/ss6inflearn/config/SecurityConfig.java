@@ -19,7 +19,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .rememberMe(r -> r
-                        // .alwaysRemember(true)
+                        .alwaysRemember(true)
                         .tokenValiditySeconds(3600)
                         .userDetailsService(userDetailsService())
                         .rememberMeParameter("remember")
