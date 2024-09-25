@@ -16,15 +16,14 @@ public class SecurityConfig {
 
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+        http.authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/anonymous").hasRole("GUEST")
+                        .requestMatchers("/anonymousContext", "/authentication").permitAll()
+                        .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
-                .rememberMe(r -> r
-                        .alwaysRemember(true)
-                        .tokenValiditySeconds(3600)
-                        .userDetailsService(userDetailsService())
-                        .rememberMeParameter("remember")
-                        .rememberMeCookieName("remember")
-                        .key("security")
+                .anonymous(a -> a
+                        .principal("guest")
+                        .authorities("ROLE_GUEST")
                 );
 
         return http.build();
