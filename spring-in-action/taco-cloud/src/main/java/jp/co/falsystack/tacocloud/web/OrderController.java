@@ -6,6 +6,7 @@ import jp.co.falsystack.tacocloud.User;
 import jp.co.falsystack.tacocloud.data.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,11 +22,14 @@ import org.springframework.web.bind.support.SessionStatus;
 public class OrderController {
 
     private final OrderRepository orderRepository;
+    private final OrderProps orderProps;
+
 
     @GetMapping
     public String ordersForUser(
             @AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("orders", orderRepository.findByUserOrderByPlacedAtDesc(user));
+        var pageable = PageRequest.of(0, orderProps.getPageSize());
+        model.addAttribute("orders", orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
         return "orderList";
     }
 
