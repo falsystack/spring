@@ -53,4 +53,9 @@ public class IndexController {
         System.out.println("IndexController.logoutSuccess");
         return "logoutSuccess";
     }
+
+    @GetMapping("/invalidSessionUrl")
+    public String invalidSessionUrl() {
+
+    }
 }
