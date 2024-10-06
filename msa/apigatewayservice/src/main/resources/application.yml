@@ -13,6 +13,10 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: userservice
+          uri: lb://USERSERVICE
+          predicates:
+            - Path=/user-service/**
         - id: firstservice
           uri: lb://FIRSTSERVICE
           predicates:

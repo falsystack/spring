@@ -17,7 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurity {
 
     @Bean
-    @ConditionalOnProperty(name = "spring.h2.console.enabled",havingValue = "true")
+    @ConditionalOnProperty(name = "spring.h2.console.enabled", havingValue = "true")
     public WebSecurityCustomizer configureH2ConsoleEnable() {
         return web -> web.ignoring()
                 .requestMatchers(PathRequest.toH2Console());
@@ -26,11 +26,9 @@ public class WebSecurity {
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
-//                .authorizeHttpRequests(request -> request
-//                        .requestMatchers("/users/**").permitAll()
-//                        .anyRequest().authenticated()
-//                );
-        http.authorizeHttpRequests(request -> request.requestMatchers("/users").permitAll());
+        http.authorizeHttpRequests(request -> request
+                .requestMatchers("/users").permitAll()
+                .anyRequest().permitAll());
         return http.build();
     }
 
