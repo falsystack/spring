@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_USER: postgresql
       POSTGRES_PASSWORD: postgresql
-      POSTGRES_DB: yourdatabase
+      POSTGRES_DB: springsecurity
     volumes:
       - ./data:/var/lib/postgresql/data
     ports:
