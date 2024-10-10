@@ -1,5 +1,6 @@
 package io.security.springsecuritymaster.security.configs;
 
+import io.security.springsecuritymaster.security.provider.FormAuthenticationProvider;
 import io.security.springsecuritymaster.security.service.FormUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final FormUserDetailService formUserDetailService;
+    private final FormAuthenticationProvider formAuthenticationProvider;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -31,7 +33,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login").permitAll())
-                .userDetailsService(formUserDetailService)
+//                .authenticationProvider(formAuthenticationProvider)
+//                .userDetailsService(formUserDetailService)
         ;
         return http.build();
     }
@@ -41,9 +44,4 @@ public class SecurityConfig {
 //        UserDetails user = User.withUsername("user").password("{noop}1111").roles("USER").build();
 //        return new InMemoryUserDetailsManager(user);
 //    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
 }
