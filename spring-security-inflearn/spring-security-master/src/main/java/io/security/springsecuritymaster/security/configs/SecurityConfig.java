@@ -1,5 +1,6 @@
 package io.security.springsecuritymaster.security.configs;
 
+import io.security.springsecuritymaster.security.handler.FormAccessDeniedHandler;
 import io.security.springsecuritymaster.security.provider.FormAuthenticationProvider;
 import io.security.springsecuritymaster.security.service.FormUserDetailService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,7 +39,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/images/**", "/js/**", "/favicon.*", "/*/icon-*").permitAll()
                         .requestMatchers("/", "/signup", "/login*").permitAll()
+                        .requestMatchers("/user").hasAuthority("ROLE_USER")
+                        .requestMatchers("/manager").hasAuthority("ROLE_MANAGER")
+                        .requestMatchers("/admin").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated())
+
+
+
                 .formLogin(form -> form
                         .loginPage("/login").permitAll()
                         .authenticationDetailsSource(authenticationDetailsSource)
@@ -46,6 +53,9 @@ public class SecurityConfig {
                         .failureHandler(authenticationFailureHandler)
                 )
                 .authenticationProvider(formAuthenticationProvider)
+                .exceptionHandling(exceptionHandle -> exceptionHandle
+                        // 인증 받은 상태에서 호출 된다
+                        .accessDeniedHandler(new FormAccessDeniedHandler("/denied")))
 //                .userDetailsService(formUserDetailService)
         ;
         return http.build();
