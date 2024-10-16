@@ -73,7 +73,7 @@ public class SecurityConfig {
         var authenticationManager = authenticationManagerBuilder.build();
 
         http
-                .securityMatcher("/api/login")
+                .securityMatcher("/api/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/images/**", "/js/**", "/favicon.*", "/*/icon-*").permitAll()
                         .requestMatchers("/api/user").hasAuthority("ROLE_USER")
