@@ -1,4 +1,4 @@
-package jp.co.falsystack.hexagonal.domain;
+package jp.co.falsystack.hexagonal.account.domain;
 
 import lombok.NonNull;
 import lombok.Value;
